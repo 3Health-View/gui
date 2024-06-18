@@ -1,0 +1,21 @@
+.account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .account-form {
+    width: 25%;
+    .account-text-heading {
+      text-align: center;
+      font-size: 64px;
+      font-weight: 300;
+      line-height: 120%;
+    }
+
+    .action-button {
+      width: 100%;
+      margin-top: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
+}

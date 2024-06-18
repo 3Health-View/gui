@@ -1,0 +1,28 @@
+@import "~bootstrap/scss/bootstrap";
+
+.main-container {
+  color: $white;
+
+  .header {
+    height: 80px;
+    border-bottom: 1px solid $white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+
+    h1 {
+      font-weight: bold;
+      user-select: none;
+    }
+
+    h1:hover {
+      cursor: pointer;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 16px;
+    }
+  }
+}
