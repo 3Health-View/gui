@@ -192,15 +192,7 @@ const Main = () => {
         )}
       </div>
 
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 4,
-        }}
-      >
+      <div className="stat-bar-container">
         {user.ouraToken ? (
           <>
             <StatBar
