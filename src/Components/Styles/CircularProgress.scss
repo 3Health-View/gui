@@ -1,0 +1,16 @@
+@import "~bootstrap/scss/bootstrap";
+
+.circular-progress-container {
+  width: 150px;
+  height: 150px;
+  user-select: none;
+  .CircularProgressbar-path {
+    stroke: $primary;
+    transform: rotate(0.5turn);
+    transform-origin: center center;
+  }
+
+  .CircularProgressbar-trail {
+    stroke: $white;
+  }
+}
