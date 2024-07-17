@@ -14,6 +14,8 @@ const AccountForm = ({ isLogin }) => {
     password: "",
   });
 
+  const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+
   const handleClear = () => {
     setLoginInfo({ email: "", password: "" });
     setSignupInfo({
@@ -39,9 +41,17 @@ const AccountForm = ({ isLogin }) => {
 
   const handleLogin = async () => {
     if (loginInfo.email && loginInfo.password) {
-      const { token } = await login(loginInfo);
-      window.sessionStorage.setItem("token", token);
-      navigate("/");
+      try {
+        const { token } = await login(loginInfo);
+        window.sessionStorage.setItem("token", token);
+        navigate("/");
+      } catch (err) {
+        if (err.response) {
+          if (err.response.status === 401) {
+            setIsInvalidLogin(true);
+          }
+        }
+      }
     }
   };
 
@@ -59,6 +69,7 @@ const AccountForm = ({ isLogin }) => {
               onChange={(event) =>
                 setLoginInfo((prev) => ({ ...prev, email: event.target.value }))
               }
+              isInvalid={isInvalidLogin}
             />
           </div>
           <div>
@@ -72,6 +83,7 @@ const AccountForm = ({ isLogin }) => {
                   password: event.target.value,
                 }))
               }
+              isInvalid={isInvalidLogin}
             />
           </div>
           <Button className="action-button" onClick={handleLogin}>
