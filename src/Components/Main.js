@@ -10,9 +10,14 @@ import { jwtDecode } from "jwt-decode";
 import CircularProgess from "./CircularProgress";
 import { getDisplayInfo, getToken, refreshToken } from "../API/api";
 import { useNavigate } from "react-router-dom";
-import { ExclamationCircle } from "react-bootstrap-icons";
+import {
+  CaretLeft,
+  CaretRight,
+  ExclamationCircle,
+} from "react-bootstrap-icons";
 
 import "./Styles/Main.scss";
+import moment from "moment";
 
 const CustomPlaceholder = () => {
   return (
@@ -66,6 +71,8 @@ const StatBar = ({ label, progress, format, variant, tooltip }) => {
 };
 
 const Main = () => {
+  const [statIndex, setStatIndex] = useState(0);
+  const [stat, setStat] = useState([]);
   const [dayStat, setDayStat] = useState({
     day: "",
     sleep_score: 0,
@@ -85,6 +92,7 @@ const Main = () => {
     average_heart_start: 0,
     hrv: [],
     average_hrv: 0,
+    type: "undefined",
   });
 
   const [user, setUser] = useState({
@@ -137,7 +145,8 @@ const Main = () => {
   const updateScores = async () => {
     try {
       const data = await getDisplayInfo();
-      setDayStat(data.data[0]);
+      setStat(data.data);
+      setDayStat(data.data[statIndex]);
     } catch (err) {
       if (err.response) {
         if (err.response.status < 200 || err.response.status >= 300) {
@@ -151,6 +160,30 @@ const Main = () => {
         console.log(`Error: ${err.message}`);
       }
     }
+  };
+
+  const increaseStatIndex = () => {
+    setStatIndex((prev) => {
+      if (prev + 1 > stat.length) {
+        setDayStat(stat[stat.length]);
+        return stat.length;
+      } else {
+        setDayStat(stat[prev + 1]);
+        return prev + 1;
+      }
+    });
+  };
+
+  const decreaseStatIndex = () => {
+    setStatIndex((prev) => {
+      if (prev - 1 < 0) {
+        setDayStat(stat[0]);
+        return 0;
+      } else {
+        setDayStat(stat[prev - 1]);
+        return prev - 1;
+      }
+    });
   };
 
   const handleOuraAuth = () => {
@@ -173,22 +206,54 @@ const Main = () => {
       <div className="circle-progress-container">
         {user.ouraToken ? (
           <>
-            <CircularProgess
-              progress={dayStat.readiness_score}
-              text={"Readiness"}
-            />
-            <CircularProgess progress={dayStat.sleep_score} text={"Sleep"} />
-            <CircularProgess
-              progress={dayStat.activity_score}
-              text={"Activity"}
-            />
+            <div className="date-info-group">
+              <h4>{moment(dayStat.day).format("ddd, MMM DD, YYYY")}</h4>
+              <OverlayTrigger
+                placement="right"
+                overlay={
+                  <Tooltip>
+                    Based on sleep periods (i.e. Naps, Regular night-time
+                    sleeps, etc...)
+                  </Tooltip>
+                }
+              >
+                <ExclamationCircle size={16} />
+              </OverlayTrigger>
+            </div>
+            <h6 className="sleep-type">{dayStat.type.split("_").join(" ")}</h6>
+            <div className="circle-progress-group">
+              <>
+                <CaretLeft
+                  className="caret"
+                  size={32}
+                  onClick={increaseStatIndex}
+                />
+                <CircularProgess
+                  progress={dayStat.readiness_score}
+                  text={"Readiness"}
+                />
+                <CircularProgess
+                  progress={dayStat.sleep_score}
+                  text={"Sleep"}
+                />
+                <CircularProgess
+                  progress={dayStat.activity_score}
+                  text={"Activity"}
+                />
+                <CaretRight
+                  className="caret"
+                  size={32}
+                  onClick={decreaseStatIndex}
+                />
+              </>
+            </div>
           </>
         ) : (
-          <>
+          <div className="circle-progress-group">
             <Placeholder style={{ width: 150, height: 150 }} />
             <Placeholder style={{ width: 150, height: 150 }} />
             <Placeholder style={{ width: 150, height: 150 }} />
-          </>
+          </div>
         )}
       </div>
 
@@ -210,7 +275,7 @@ const Main = () => {
             <StatBar
               label="Total Sleep"
               progress={
-                -1.5625 * Math.pow(dayStat.total_sleep / 3600 - 8, 2) + 100
+                -3.08 * Math.pow(dayStat.total_sleep / 3600 - 8, 2) + 100
               }
               format={`${Math.floor(dayStat.total_sleep / 3600)}h 
               ${Math.ceil(
