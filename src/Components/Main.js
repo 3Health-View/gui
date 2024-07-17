@@ -199,7 +199,7 @@ const Main = () => {
 
   return (
     <div className="content-container">
-      {!user.ouraToken && (
+      {window.sessionStorage.getItem("token") && !user.ouraToken && (
         <Button
           disabled={!user.email}
           variant="warning"
