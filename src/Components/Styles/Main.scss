@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   gap: 64px;
+  padding-bottom: 64px;
 
   .circle-progress-container {
     display: flex;
@@ -48,6 +49,28 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
+  }
+
+  .graph-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .line-graph-group {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+
+      .line-graph {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+    }
   }
 
   .bar-label {
