@@ -331,180 +331,182 @@ const Main = () => {
       </div>
 
       <div className="graph-container">
-        <div className="line-graph-group">
-          <div className="line-graph">
-            <span>7 Day Readiness Score</span>
-            <Line
-              datasetIdKey="id"
-              data={{
-                labels: stat
-                  .filter((info) => info.type === "long_sleep")
-                  .slice(0, 7)
-                  .map((info) => info.day)
-                  .reverse(),
-                datasets: [
-                  {
-                    id: 1,
-                    label: "",
-                    data: stat
-                      .filter((info) => info.type === "long_sleep")
-                      .slice(0, 7)
-                      .map((info) => info.readiness_score)
-                      .reverse(),
-                    borderColor: "#0d6efd",
+        {user.ouraToken && (
+          <div className="line-graph-group">
+            <div className="line-graph">
+              <span>7 Day Readiness Score</span>
+              <Line
+                datasetIdKey="id"
+                data={{
+                  labels: stat
+                    .filter((info) => info.type === "long_sleep")
+                    .slice(0, 7)
+                    .map((info) => info.day)
+                    .reverse(),
+                  datasets: [
+                    {
+                      id: 1,
+                      label: "",
+                      data: stat
+                        .filter((info) => info.type === "long_sleep")
+                        .slice(0, 7)
+                        .map((info) => info.readiness_score)
+                        .reverse(),
+                      borderColor: "#0d6efd",
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: { display: false },
                   },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: { display: false },
-                },
-              }}
-            />
-          </div>
-          <div className="line-graph">
-            <span>7 Day Sleep Score</span>
-            <Line
-              datasetIdKey="id"
-              data={{
-                labels: stat
-                  .filter((info) => info.type === "long_sleep")
-                  .slice(0, 7)
-                  .map((info) => info.day)
-                  .reverse(),
-                datasets: [
-                  {
-                    id: 1,
-                    label: "",
-                    data: stat
-                      .filter((info) => info.type === "long_sleep")
-                      .slice(0, 7)
-                      .map((info) => info.sleep_score)
-                      .reverse(),
-                    borderColor: "#0d6efd",
-                  },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: { display: false },
-                },
-              }}
-            />
-          </div>
-          <div className="line-graph">
-            <span>7 Day Activity Score</span>
-            <Line
-              datasetIdKey="id"
-              data={{
-                labels: stat
-                  .filter((info) => info.type === "long_sleep")
-                  .slice(0, 7)
-                  .map((info) => info.day)
-                  .reverse(),
-                datasets: [
-                  {
-                    id: 1,
-                    label: "",
-                    data: stat
-                      .filter((info) => info.type === "long_sleep")
-                      .slice(0, 7)
-                      .map((info) => info.activity_score)
-                      .reverse(),
-                    borderColor: "#0d6efd",
-                  },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: { display: false },
-                },
-              }}
-            />
-          </div>
-          <div className="line-graph">
-            <div className="bar-label">
-              <span>Heart Rate Variability (HRV)</span>
-              <OverlayTrigger
-                placement="right"
-                overlay={
-                  <Tooltip>
-                    {`5-min intervals from start to end of sleep duration: ${moment(
-                      dayStat.bedtime_start
-                    ).format("MMM D H:mma")} - ${moment(
-                      dayStat.bedtime_end
-                    ).format("MMM D H:mma")}`}
-                  </Tooltip>
-                }
-              >
-                <ExclamationCircle size={12} />
-              </OverlayTrigger>
+                }}
+              />
             </div>
-            <Line
-              datasetIdKey="id"
-              data={{
-                labels: Array.from(
-                  { length: dayStat.hrv.length },
-                  (_, i) => i + 1
-                ),
-                datasets: [
-                  {
-                    id: 1,
-                    label: "",
-                    data: dayStat.hrv,
-                    borderColor: "#0d6efd",
+            <div className="line-graph">
+              <span>7 Day Sleep Score</span>
+              <Line
+                datasetIdKey="id"
+                data={{
+                  labels: stat
+                    .filter((info) => info.type === "long_sleep")
+                    .slice(0, 7)
+                    .map((info) => info.day)
+                    .reverse(),
+                  datasets: [
+                    {
+                      id: 1,
+                      label: "",
+                      data: stat
+                        .filter((info) => info.type === "long_sleep")
+                        .slice(0, 7)
+                        .map((info) => info.sleep_score)
+                        .reverse(),
+                      borderColor: "#0d6efd",
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: { display: false },
                   },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: { display: false },
-                },
-              }}
-            />
-          </div>
-          <div className="line-graph">
-            <div className="bar-label">
-              <span>Heart Rate</span>
-              <OverlayTrigger
-                placement="right"
-                overlay={
-                  <Tooltip>
-                    {`5-min intervals from start to end of sleep duration: ${moment(
-                      dayStat.bedtime_start
-                    ).format("MMM D H:mma")} - ${moment(
-                      dayStat.bedtime_end
-                    ).format("MMM D H:mma")}`}
-                  </Tooltip>
-                }
-              >
-                <ExclamationCircle size={12} />
-              </OverlayTrigger>
+                }}
+              />
             </div>
-            <Line
-              datasetIdKey="id"
-              data={{
-                labels: Array.from(
-                  { length: dayStat.heart_rate.length },
-                  (_, i) => i + 1
-                ),
-                datasets: [
-                  {
-                    id: 1,
-                    label: "",
-                    data: dayStat.heart_rate,
-                    borderColor: "#0d6efd",
+            <div className="line-graph">
+              <span>7 Day Activity Score</span>
+              <Line
+                datasetIdKey="id"
+                data={{
+                  labels: stat
+                    .filter((info) => info.type === "long_sleep")
+                    .slice(0, 7)
+                    .map((info) => info.day)
+                    .reverse(),
+                  datasets: [
+                    {
+                      id: 1,
+                      label: "",
+                      data: stat
+                        .filter((info) => info.type === "long_sleep")
+                        .slice(0, 7)
+                        .map((info) => info.activity_score)
+                        .reverse(),
+                      borderColor: "#0d6efd",
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: { display: false },
                   },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: { display: false },
-                },
-              }}
-            />
+                }}
+              />
+            </div>
+            <div className="line-graph">
+              <div className="bar-label">
+                <span>Heart Rate Variability (HRV)</span>
+                <OverlayTrigger
+                  placement="right"
+                  overlay={
+                    <Tooltip>
+                      {`5-min intervals from start to end of sleep duration: ${moment(
+                        dayStat.bedtime_start
+                      ).format("MMM D H:mma")} - ${moment(
+                        dayStat.bedtime_end
+                      ).format("MMM D H:mma")}`}
+                    </Tooltip>
+                  }
+                >
+                  <ExclamationCircle size={12} />
+                </OverlayTrigger>
+              </div>
+              <Line
+                datasetIdKey="id"
+                data={{
+                  labels: Array.from(
+                    { length: dayStat.hrv.length },
+                    (_, i) => i + 1
+                  ),
+                  datasets: [
+                    {
+                      id: 1,
+                      label: "",
+                      data: dayStat.hrv,
+                      borderColor: "#0d6efd",
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: { display: false },
+                  },
+                }}
+              />
+            </div>
+            <div className="line-graph">
+              <div className="bar-label">
+                <span>Heart Rate</span>
+                <OverlayTrigger
+                  placement="right"
+                  overlay={
+                    <Tooltip>
+                      {`5-min intervals from start to end of sleep duration: ${moment(
+                        dayStat.bedtime_start
+                      ).format("MMM D H:mma")} - ${moment(
+                        dayStat.bedtime_end
+                      ).format("MMM D H:mma")}`}
+                    </Tooltip>
+                  }
+                >
+                  <ExclamationCircle size={12} />
+                </OverlayTrigger>
+              </div>
+              <Line
+                datasetIdKey="id"
+                data={{
+                  labels: Array.from(
+                    { length: dayStat.heart_rate.length },
+                    (_, i) => i + 1
+                  ),
+                  datasets: [
+                    {
+                      id: 1,
+                      label: "",
+                      data: dayStat.heart_rate,
+                      borderColor: "#0d6efd",
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: { display: false },
+                  },
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
