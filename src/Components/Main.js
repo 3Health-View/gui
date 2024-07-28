@@ -217,15 +217,15 @@ const Main = () => {
                 placement="right"
                 overlay={
                   <Tooltip>
-                    Based on sleep periods (i.e. Naps, Regular night-time
-                    sleeps, etc...)
+                    [{dayStat.type}] Based on sleep periods (i.e. Naps, Regular
+                    night-time sleeps, etc...)
                   </Tooltip>
                 }
               >
                 <ExclamationCircle size={16} />
               </OverlayTrigger>
             </div>
-            <h6 className="sleep-type">{dayStat.type.split("_").join(" ")}</h6>
+            {/* <h6 className="sleep-type">{dayStat.type.split("_").join(" ")}</h6> */}
             <div className="circle-progress-group">
               <>
                 <CaretLeft
@@ -269,7 +269,7 @@ const Main = () => {
               label="Sleep Efficiency"
               progress={dayStat.efficiency}
               format={`${dayStat.efficiency}%`}
-              variant={dayStat.efficiency <= 50 ? "danger" : "primary"}
+              variant={dayStat.efficiency <= 85 ? "danger" : "primary"}
             />
             <StatBar
               label="Restfulness"
