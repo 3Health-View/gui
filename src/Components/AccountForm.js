@@ -3,6 +3,7 @@ import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import "./Styles/AccountForm.scss";
 import { login, signup } from "../API/api";
 import { useNavigate } from "react-router-dom";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const AccountForm = ({ isLogin }) => {
   const navigate = useNavigate();
@@ -15,6 +16,10 @@ const AccountForm = ({ isLogin }) => {
   });
 
   const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const [isInvalidSU, setIsInvalidSU] = useState({
+    email: false,
+    password: false,
+  });
 
   const handleClear = () => {
     setLoginInfo({ email: "", password: "" });
@@ -33,9 +38,18 @@ const AccountForm = ({ isLogin }) => {
       sigupInfo.lastName &&
       sigupInfo.password
     ) {
-      const { token } = await signup(sigupInfo);
-      window.sessionStorage.setItem("token", token);
-      navigate("/");
+      try {
+        const { token } = await signup(sigupInfo);
+        window.sessionStorage.setItem("token", token);
+        navigate("/");
+      } catch (err) {
+        if (err.response) {
+          if (err.response.status >= 400) {
+            setIsInvalidSU({ email: true, password: true });
+            handleClear();
+          }
+        }
+      }
     }
   };
 
@@ -47,7 +61,7 @@ const AccountForm = ({ isLogin }) => {
         navigate("/");
       } catch (err) {
         if (err.response) {
-          if (err.response.status === 401) {
+          if (err.response.status >= 400) {
             setIsInvalidLogin(true);
           }
         }
@@ -56,6 +70,15 @@ const AccountForm = ({ isLogin }) => {
   };
 
   useEffect(handleClear, [isLogin]);
+
+  useEffect(() => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const validEmail = emailRegex.test(sigupInfo.email);
+    setIsInvalidSU((prev) => ({
+      ...prev,
+      email: !validEmail,
+    }));
+  }, [sigupInfo.email]);
 
   return (
     <div className="account-container">
@@ -128,6 +151,7 @@ const AccountForm = ({ isLogin }) => {
                   email: event.target.value,
                 }))
               }
+              isInvalid={isInvalidSU.email}
             />
           </div>
           <div>
@@ -141,9 +165,24 @@ const AccountForm = ({ isLogin }) => {
                   password: event.target.value,
                 }))
               }
+              isInvalid={isInvalidSU.password}
+            />
+            <PasswordStrengthBar
+              password={sigupInfo.password}
+              onChangeScore={(score, feedback) => {
+                if (score < 2) {
+                  setIsInvalidSU((prev) => ({ ...prev, password: true }));
+                } else {
+                  setIsInvalidSU((prev) => ({ ...prev, password: false }));
+                }
+              }}
             />
           </div>
-          <Button className="action-button" onClick={handleSignUp}>
+          <Button
+            className="action-button"
+            onClick={handleSignUp}
+            disabled={isInvalidSU.email || isInvalidSU.password}
+          >
             Sign Up
           </Button>
         </Form>
