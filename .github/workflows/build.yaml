@@ -40,3 +40,6 @@ jobs:
           tags: |
             us-central1-docker.pkg.dev/fantasyleagueoflegends/hv/hv-gui:${{ steps.get-tag.outputs.short_ref }}
             us-central1-docker.pkg.dev/fantasyleagueoflegends/hv/hv-gui:latest
+          build-args: |
+            CLIENT_ID=${{ secrets.OURA_CLIENT_ID }}
+            BACKEND_URL=${{ vars.BACKEND_URI }}
