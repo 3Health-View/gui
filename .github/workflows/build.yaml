@@ -26,7 +26,7 @@ jobs:
       - name: Login to GAR
         uses: docker/login-action@v3
         with:
-          registry: us-central-1-docker.pkg.dev
+          registry: us-central1-docker.pkg.dev
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
       - name: Get Tag
@@ -38,5 +38,5 @@ jobs:
         with:
           push: true
           tags: |
-            us-central-1-docker.pkg.dev/fantasyleagueoflegends/hv/hv-gui:${{ steps.get-tag.outputs.short_ref }}
-            us-central-1-docker.pkg.dev/fantasyleagueoflegends/hv/hv-gui:latest
+            us-central1-docker.pkg.dev/fantasyleagueoflegends/hv/hv-gui:${{ steps.get-tag.outputs.short_ref }}
+            us-central1-docker.pkg.dev/fantasyleagueoflegends/hv/hv-gui:latest
