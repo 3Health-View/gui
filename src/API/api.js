@@ -75,3 +75,17 @@ export const getDisplayInfo = async () => {
 
   return data;
 };
+
+export const saveData = async () => {
+  const { data } = await axios.post(
+    `${process.env.REACT_APP_BACKEND}/api/v1/data/update-scores`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
+      },
+    }
+  );
+
+  return data;
+};

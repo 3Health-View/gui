@@ -8,7 +8,7 @@ import {
 } from "react-bootstrap";
 import { jwtDecode } from "jwt-decode";
 import CircularProgess from "./CircularProgress";
-import { getDisplayInfo, getToken, refreshToken } from "../API/api";
+import { getDisplayInfo, getToken, refreshToken, saveData } from "../API/api";
 import { useNavigate } from "react-router-dom";
 import {
   CaretLeft,
@@ -143,15 +143,17 @@ const Main = () => {
 
   useEffect(() => {
     if (user.ouraToken) {
-      updateScores();
+      updateStat();
     }
   }, [user.ouraToken]);
 
-  const updateScores = async () => {
+  const updateStat = async () => {
     try {
       const data = await getDisplayInfo();
+      console.log(data);
       setStat(data.data);
       setDayStat(data.data[statIndex]);
+      await saveData();
     } catch (err) {
       if (err.response) {
         if (err.response.status < 200 || err.response.status >= 300) {
@@ -339,7 +341,7 @@ const Main = () => {
                 datasetIdKey="id"
                 data={{
                   labels: stat
-                    .filter((info) => info.type === "long_sleep")
+                    ?.filter((info) => info.type === "long_sleep")
                     .slice(0, 7)
                     .map((info) => info.day)
                     .reverse(),
@@ -348,7 +350,7 @@ const Main = () => {
                       id: 1,
                       label: "",
                       data: stat
-                        .filter((info) => info.type === "long_sleep")
+                        ?.filter((info) => info.type === "long_sleep")
                         .slice(0, 7)
                         .map((info) => info.readiness_score)
                         .reverse(),
@@ -369,7 +371,7 @@ const Main = () => {
                 datasetIdKey="id"
                 data={{
                   labels: stat
-                    .filter((info) => info.type === "long_sleep")
+                    ?.filter((info) => info.type === "long_sleep")
                     .slice(0, 7)
                     .map((info) => info.day)
                     .reverse(),
@@ -378,7 +380,7 @@ const Main = () => {
                       id: 1,
                       label: "",
                       data: stat
-                        .filter((info) => info.type === "long_sleep")
+                        ?.filter((info) => info.type === "long_sleep")
                         .slice(0, 7)
                         .map((info) => info.sleep_score)
                         .reverse(),
@@ -399,7 +401,7 @@ const Main = () => {
                 datasetIdKey="id"
                 data={{
                   labels: stat
-                    .filter((info) => info.type === "long_sleep")
+                    ?.filter((info) => info.type === "long_sleep")
                     .slice(0, 7)
                     .map((info) => info.day)
                     .reverse(),
@@ -408,7 +410,7 @@ const Main = () => {
                       id: 1,
                       label: "",
                       data: stat
-                        .filter((info) => info.type === "long_sleep")
+                        ?.filter((info) => info.type === "long_sleep")
                         .slice(0, 7)
                         .map((info) => info.activity_score)
                         .reverse(),
