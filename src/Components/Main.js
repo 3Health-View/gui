@@ -21,6 +21,7 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 
 import "./Styles/Main.scss";
+import { getRandomSleepRecommendation } from "../Utilities/recommendations";
 
 Chart.register(CategoryScale);
 
@@ -97,6 +98,7 @@ const Main = () => {
     average_heart_start: 0,
     hrv: [],
     average_hrv: 0,
+    recommendation: "",
     type: "undefined",
   });
 
@@ -254,6 +256,9 @@ const Main = () => {
                 />
               </>
             </div>
+            <h5 className="recommendation-text">
+              "{getRandomSleepRecommendation(dayStat.recommendation)}"
+            </h5>
           </>
         ) : (
           <div className="circle-progress-group">
